@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoviDo</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 10px 0 5px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .configuracion {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        select {
+            padding: 10px 14px;
+            font-size: 17px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .titulo-escala,
+        .titulo-melodia {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .botones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            justify-content: center;
+        }
+
+        .nota {
+            width: 62px;
+            height: 58px;
+            border: none;
+            border-radius: 10px;
+            background: #2d6cdf;
+            color: white;
+            font-size: 19px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform .1s, background .1s;
+        }
+
+        .nota:hover {
+            background: #1b56c0;
+            transform: translateY(-2px);
+        }
+
+        .nota:active {
+            transform: scale(.95);
+        }
+
+        .melodia {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            min-height: 70px;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .ficha {
+            background: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 9px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .vacio {
+            width: 100%;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        .controles {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .control {
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .tonica {
+            background: #555;
+        }
+
+        .reproducir {
+            background: #2e7d32;
+        }
+
+        .borrar {
+            background: #777;
+        }
+
+        .control:hover {
+            opacity: .85;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .nota {
+                width: 54px;
+                height: 54px;
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1>🎵 MoviDo</h1>
+
+    <p class="subtitulo">
+        Verificador melódico mediante solfeo movible
+    </p>
+
+    <div class="panel">
+
+        <div class="configuracion">
+
+            <div class="campo">
+                <label for="modo"><strong>Modo</strong></label>
+
+                <select id="modo">
+                    <option value="mayor">Mayor</option>
+                    <option value="menor">Menor</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="tonica"><strong>Tónica</strong></label>
+
+                <select id="tonica">
+                    <option value="C">Do</option>
+                    <option value="Db">Re♭</option>
+                    <option value="D">Re</option>
+                    <option value="Eb">Mi♭</option>
+                    <option value="E">Mi</option>
+                    <option value="F">Fa</option>
+                    <option value="F#">Fa♯</option>
+                    <option value="G">Sol</option>
+                    <option value="Ab">La♭</option>
+                    <option value="A">La</option>
+                    <option value="Bb">Si♭</option>
+                    <option value="B">Si</option>
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="controles">
+
+        <button id="tocarTonica" class="control tonica">
+            🎵 Escuchar la tónica
+        </button>
+
+    </div>
+
+    <div class="panel">
+
+        <h2 class="titulo-escala">
+            Escala
+        </h2>
+
+        <div id="botones" class="botones"></div>
+
+    </div>
+
+    <div class="panel">
+
+        <h2 class="titulo-melodia">
+            Melodía
+        </h2>
+
+        <div id="melodia" class="melodia">
+
+            <span class="vacio">
+                Todavía no escribiste ninguna nota.
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="controles">
+
+        <button id="reproducir" class="control reproducir">
+            ▶ Reproducir
+        </button>
+
+        <button id="borrarUltima" class="control borrar">
+            ⌫ Última
+        </button>
+
+        <button id="borrarTodo" class="control borrar">
+            🗑 Borrar todo
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   MOViDO
+   ========================================== */
+
+const modo = document.getElementById("modo");
+const tonica = document.getElementById("tonica");
+const botones = document.getElementById("botones");
+const melodia = document.getElementById("melodia");
+const tocarTonica = document.getElementById("tocarTonica");
+const reproducir = document.getElementById("reproducir");
+const borrarUltima = document.getElementById("borrarUltima");
+const borrarTodo = document.getElementById("borrarTodo");
+
+
+/* ==========================================
+   ESCALA MAYOR
+
+   La tónica es DO.
+   ========================================== */
+
+const escalaMayor = [
+
+    { silaba: "so", semitonos: -5 },
+    { silaba: "la", semitonos: -3 },
+    { silaba: "ti", semitonos: -1 },
+
+    { silaba: "do", semitonos: 0 },
+    { silaba: "re", semitonos: 2 },
+    { silaba: "mi", semitonos: 4 },
+    { silaba: "fa", semitonos: 5 },
+    { silaba: "so", semitonos: 7 },
+    { silaba: "la", semitonos: 9 },
+    { silaba: "ti", semitonos: 11 },
+
+    { silaba: "do'", semitonos: 12 },
+    { silaba: "re'", semitonos: 14 },
+    { silaba: "mi'", semitonos: 16 },
+    { silaba: "fa'", semitonos: 17 },
+    { silaba: "so'", semitonos: 19 }
+
+];
+
+
+/* ==========================================
+   ESCALA MENOR
+
+   La tónica es LA.
+
+   Secuencia:
+
+   si, la, ti, do, re, mi, fa, fi,
+   so, si, la, ti, do', re', mi', fa'
+   ========================================== */
+
+const escalaMenor = [
+
+    { silaba: "si", semitonos: -1 },
+    { silaba: "la", semitonos: 0 },
+    { silaba: "ti", semitonos: 2 },
+
+    { silaba: "do", semitonos: 3 },
+    { silaba: "re", semitonos: 5 },
+    { silaba: "mi", semitonos: 7 },
+    { silaba: "fa", semitonos: 8 },
+    { silaba: "fi", semitonos: 9 },
+
+    { silaba: "so", semitonos: 10 },
+    { silaba: "si", semitonos: 11 },
+
+    { silaba: "la", semitonos: 12 },
+    { silaba: "ti", semitonos: 14 },
+
+    { silaba: "do'", semitonos: 15 },
+    { silaba: "re'", semitonos: 17 },
+    { silaba: "mi'", semitonos: 19 },
+    { silaba: "fa'", semitonos: 20 }
+
+];
+
+
+let secuencia = [];
+
+
+/* ==========================================
+   FRECUENCIAS DE LAS TÓNICAS
+   ========================================== */
+
+const frecuencias = {
+
+    "C": 261.63,
+    "Db": 277.18,
+    "D": 293.66,
+    "Eb": 311.13,
+    "E": 329.63,
+    "F": 349.23,
+    "F#": 369.99,
+    "G": 392.00,
+    "Ab": 415.30,
+    "A": 440.00,
+    "Bb": 466.16,
+    "B": 493.88
+
+};
+
+
+let audioContext = null;
+
+
+/* ==========================================
+   INICIAR AUDIO
+   ========================================== */
+
+function iniciarAudio() {
+
+    if (!audioContext) {
+
+        audioContext =
+            new (window.AudioContext ||
+                 window.webkitAudioContext)();
+
+    }
+
+    if (audioContext.state === "suspended") {
+
+        audioContext.resume();
+
+    }
+
+}
+
+
+/* ==========================================
+   TOCAR UNA NOTA
+   ========================================== */
+
+function tocarNota(semitonos, duracion = 0.5) {
+
+    iniciarAudio();
+
+    const frecuenciaTonica =
+        frecuencias[tonica.value];
+
+    const frecuencia =
+        frecuenciaTonica *
+        Math.pow(2, semitonos / 12);
+
+
+    const oscilador =
+        audioContext.createOscillator();
+
+    const ganancia =
+        audioContext.createGain();
+
+
+    oscilador.type = "sine";
+
+    oscilador.frequency.value =
+        frecuencia;
+
+
+    oscilador.connect(ganancia);
+
+    ganancia.connect(
+        audioContext.destination
+    );
+
+
+    const ahora =
+        audioContext.currentTime;
+
+
+    ganancia.gain.setValueAtTime(
+        0.0001,
+        ahora
+    );
+
+
+    ganancia.gain.exponentialRampToValueAtTime(
+        0.35,
+        ahora + 0.02
+    );
+
+
+    ganancia.gain.exponentialRampToValueAtTime(
+        0.0001,
+        ahora + duracion
+    );
+
+
+    oscilador.start(ahora);
+
+    oscilador.stop(
+        ahora + duracion + 0.05
+    );
+
+}
+
+
+/* ==========================================
+   CREAR BOTONES DE LA ESCALA
+   ========================================== */
+
+function crearBotones() {
+
+    botones.innerHTML = "";
+
+    const escala =
+        modo.value === "mayor"
+            ? escalaMayor
+            : escalaMenor;
+
+
+    escala.forEach(nota => {
+
+        const boton =
+            document.createElement("button");
+
+
+        boton.className = "nota";
+
+        boton.textContent =
+            nota.silaba;
+
+
+        boton.addEventListener(
+            "click",
+            () => {
+
+                tocarNota(
+                    nota.semitonos
+                );
+
+
+                secuencia.push(nota);
+
+                actualizarMelodia();
+
+            }
+        );
+
+
+        botones.appendChild(boton);
+
+    });
+
+}
+
+
+/* ==========================================
+   ACTUALIZAR MELODÍA
+   ========================================== */
+
+function actualizarMelodia() {
+
+    melodia.innerHTML = "";
+
+
+    if (secuencia.length === 0) {
+
+        melodia.innerHTML =
+            `<span class="vacio">
+                Todavía no escribiste ninguna nota.
+             </span>`;
+
+        return;
+
+    }
+
+
+    secuencia.forEach(nota => {
+
+        const ficha =
+            document.createElement("div");
+
+
+        ficha.className = "ficha";
+
+        ficha.textContent =
+            nota.silaba;
+
+
+        ficha.addEventListener(
+            "click",
+            () => {
+
+                tocarNota(
+                    nota.semitonos
+                );
+
+            }
+        );
+
+
+        ficha.title =
+            "Clic para escuchar";
+
+
+        melodia.appendChild(ficha);
+
+    });
+
+}
+
+
+/* ==========================================
+   CAMBIO DE MODO
+   ========================================== */
+
+modo.addEventListener(
+    "change",
+    () => {
+
+        secuencia = [];
+
+        actualizarMelodia();
+
+        crearBotones();
+
+    }
+);
+
+
+/* ==========================================
+   CAMBIO DE TÓNICA
+   ========================================== */
+
+tonica.addEventListener(
+    "change",
+    () => {
+
+        secuencia = [];
+
+        actualizarMelodia();
+
+    }
+);
+
+
+/* ==========================================
+   ESCUCHAR TÓNICA
+   ========================================== */
+
+tocarTonica.addEventListener(
+    "click",
+    () => {
+
+        tocarNota(
+            0,
+            0.8
+        );
+
+    }
+);
+
+
+/* ==========================================
+   BORRAR ÚLTIMA
+   ========================================== */
+
+borrarUltima.addEventListener(
+    "click",
+    () => {
+
+        if (secuencia.length > 0) {
+
+            secuencia.pop();
+
+            actualizarMelodia();
+
+        }
+
+    }
+);
+
+
+/* ==========================================
+   BORRAR TODO
+   ========================================== */
+
+borrarTodo.addEventListener(
+    "click",
+    () => {
+
+        secuencia = [];
+
+        actualizarMelodia();
+
+    }
+);
+
+
+/* ==========================================
+   REPRODUCIR MELODÍA
+   ========================================== */
+
+reproducir.addEventListener(
+    "click",
+    () => {
+
+        if (secuencia.length === 0) {
+            return;
+        }
+
+
+        iniciarAudio();
+
+
+        const frecuenciaTonica =
+            frecuencias[tonica.value];
+
+
+        const ahora =
+            audioContext.currentTime;
+
+
+        const duracion = 0.5;
+
+
+        secuencia.forEach(
+            (nota, indice) => {
+
+                const frecuencia =
+                    frecuenciaTonica *
+                    Math.pow(
+                        2,
+                        nota.semitonos / 12
+                    );
+
+
+                const oscilador =
+                    audioContext.createOscillator();
+
+
+                const ganancia =
+                    audioContext.createGain();
+
+
+                oscilador.type =
+                    "sine";
+
+
+                oscilador.frequency.value =
+                    frecuencia;
+
+
+                oscilador.connect(
+                    ganancia
+                );
+
+
+                ganancia.connect(
+                    audioContext.destination
+                );
+
+
+                const inicio =
+                    ahora +
+                    indice * duracion;
+
+
+                ganancia.gain.setValueAtTime(
+                    0.0001,
+                    inicio
+                );
+
+
+                ganancia.gain.exponentialRampToValueAtTime(
+                    0.35,
+                    inicio + 0.02
+                );
+
+
+                ganancia.gain.exponentialRampToValueAtTime(
+                    0.0001,
+                    inicio + duracion
+                );
+
+
+                oscilador.start(inicio);
+
+
+                oscilador.stop(
+                    inicio + duracion + 0.05
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* ==========================================
+   INICIO
+   ========================================== */
+
+crearBotones();
+
+</script>
+
+</body>
+</html>
