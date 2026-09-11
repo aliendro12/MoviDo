@@ -51,6 +51,7 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+            min-width: 130px;
         }
 
         label {
@@ -64,6 +65,23 @@
             border-radius: 8px;
             border: 1px solid #bbb;
             background: white;
+        }
+
+        input[type="range"] {
+            width: 160px;
+        }
+
+        .volumen-contenedor {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 40px;
+        }
+
+        #valorVolumen {
+            min-width: 40px;
+            font-size: 14px;
+            color: #555;
         }
 
         .seccion {
@@ -181,6 +199,38 @@
         .borrar:hover {
             background: #ecc7c7;
         }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .contenedor {
+                padding: 18px;
+            }
+
+            .fila-controles {
+                flex-direction: column;
+            }
+
+            .control {
+                width: 100%;
+            }
+
+            select {
+                width: 100%;
+            }
+
+            .volumen-contenedor {
+                width: 100%;
+            }
+
+            input[type="range"] {
+                flex: 1;
+                width: auto;
+            }
+        }
     </style>
 </head>
 
@@ -189,20 +239,27 @@
 <div class="contenedor">
 
     <h1>🎵 MoviDo</h1>
-    <div class="subtitulo">Verificador melódico mediante solfeo movible</div>
+
+    <div class="subtitulo">
+        Verificador melódico mediante solfeo movible
+    </div>
+
 
     <div class="fila-controles">
 
         <div class="control">
             <label for="modo">Modo</label>
+
             <select id="modo">
                 <option value="mayor">Mayor</option>
                 <option value="menor">Menor</option>
             </select>
         </div>
 
+
         <div class="control">
             <label for="tonica">Tónica</label>
+
             <select id="tonica">
                 <option value="C">Do</option>
                 <option value="Db">Re♭</option>
@@ -219,11 +276,49 @@
             </select>
         </div>
 
+
+        <div class="control">
+            <label for="timbre">Timbre</label>
+
+            <select id="timbre">
+                <option value="sine">Senoidal</option>
+                <option value="triangle" selected>Triangular</option>
+                <option value="square">Cuadrada</option>
+                <option value="sawtooth">Sierra</option>
+            </select>
+        </div>
+
+
+        <div class="control">
+            <label for="volumen">Volumen</label>
+
+            <div class="volumen-contenedor">
+
+                <input
+                    type="range"
+                    id="volumen"
+                    min="0"
+                    max="100"
+                    value="70"
+                >
+
+                <span id="valorVolumen">
+                    70%
+                </span>
+
+            </div>
+        </div>
+
     </div>
 
-    <button class="boton-tonica" id="escucharTonica">
+
+    <button
+        class="boton-tonica"
+        id="escucharTonica"
+    >
         🎵 Escuchar la tónica
     </button>
+
 
     <div class="seccion">
 
@@ -256,15 +351,20 @@
 
     </div>
 
+
     <div class="seccion">
 
         <div class="titulo-seccion">
             Notas
         </div>
 
-        <div class="botones" id="botonesNotas"></div>
+        <div
+            class="botones"
+            id="botonesNotas"
+        ></div>
 
     </div>
+
 
     <div class="seccion">
 
@@ -272,15 +372,24 @@
             Melodía
         </div>
 
-        <div class="melodia" id="melodia">
+        <div
+            class="melodia"
+            id="melodia"
+        >
+
             <div class="melodia-vacia">
                 Hacé clic en las notas para construir la melodía
             </div>
+
         </div>
+
 
         <div class="controles-melodia">
 
-            <button class="reproducir" id="reproducir">
+            <button
+                class="reproducir"
+                id="reproducir"
+            >
                 ▶ Reproducir
             </button>
 
@@ -288,7 +397,10 @@
                 ⌫ Última
             </button>
 
-            <button class="borrar" id="borrar">
+            <button
+                class="borrar"
+                id="borrar"
+            >
                 🗑 Borrar todo
             </button>
 
@@ -306,6 +418,7 @@
     // ==========================================
 
     const frecuencias = {
+
         "C": 261.63,
         "Db": 277.18,
         "D": 293.66,
@@ -318,6 +431,7 @@
         "A": 440.00,
         "Bb": 466.16,
         "B": 493.88
+
     };
 
 
@@ -327,9 +441,11 @@
     // ==========================================
 
     const escalaMayor = [
+
         { silaba: "so", semitonos: -5, grado: "5" },
         { silaba: "la", semitonos: -3, grado: "6" },
         { silaba: "ti", semitonos: -1, grado: "7" },
+
         { silaba: "do", semitonos: 0, grado: "1" },
         { silaba: "re", semitonos: 2, grado: "2" },
         { silaba: "mi", semitonos: 4, grado: "3" },
@@ -337,32 +453,25 @@
         { silaba: "so", semitonos: 7, grado: "5" },
         { silaba: "la", semitonos: 9, grado: "6" },
         { silaba: "ti", semitonos: 11, grado: "7" },
+
         { silaba: "do'", semitonos: 12, grado: "1" },
         { silaba: "re'", semitonos: 14, grado: "2" },
         { silaba: "mi'", semitonos: 16, grado: "3" },
         { silaba: "fa'", semitonos: 17, grado: "4" },
         { silaba: "so'", semitonos: 19, grado: "5" }
+
     ];
 
 
     // ==========================================
     // ESCALA MENOR
     // la = tónica
-    //
-    // si = ♭7 inferior
-    // la = 1
-    // ti = 2
-    // do = ♭3
-    // re = 4
-    // mi = 5
-    // fa = ♭6
-    // fi = 6
-    // so = ♭7
-    // si = 7
     // ==========================================
 
     const escalaMenor = [
-        { silaba: "si", semitonos: -1, grado: "7" },
+
+        { silaba: "si", semitonos: -1, grado: "♭7" },
+
         { silaba: "la", semitonos: 0, grado: "1" },
         { silaba: "ti", semitonos: 2, grado: "2" },
         { silaba: "do", semitonos: 3, grado: "♭3" },
@@ -372,12 +481,14 @@
         { silaba: "fi", semitonos: 9, grado: "6" },
         { silaba: "so", semitonos: 10, grado: "♭7" },
         { silaba: "si", semitonos: 11, grado: "7" },
+
         { silaba: "la", semitonos: 12, grado: "1" },
         { silaba: "ti", semitonos: 14, grado: "2" },
         { silaba: "do'", semitonos: 15, grado: "♭3" },
         { silaba: "re'", semitonos: 17, grado: "4" },
         { silaba: "mi'", semitonos: 19, grado: "5" },
         { silaba: "fa'", semitonos: 20, grado: "♭6" }
+
     ];
 
 
@@ -391,187 +502,333 @@
 
     let formaMostrar = "solfeo";
 
+    let audioContext = null;
+
 
     // ==========================================
     // AUDIO
     // ==========================================
 
-    let audioContext = null;
-
-
     function obtenerAudioContext() {
 
         if (!audioContext) {
+
             audioContext = new (
                 window.AudioContext ||
                 window.webkitAudioContext
             )();
+
+        }
+
+        if (audioContext.state === "suspended") {
+
+            audioContext.resume();
+
         }
 
         return audioContext;
+
     }
 
 
-    function reproducirFrecuencia(frecuencia, duracion = 0.45) {
+    function obtenerVolumen() {
 
-        const ctx = obtenerAudioContext();
+        const valor =
+            Number(
+                document.getElementById("volumen").value
+            );
 
-        const oscilador = ctx.createOscillator();
-        const ganancia = ctx.createGain();
+        return valor / 100;
 
-        oscilador.type = "sine";
-        oscilador.frequency.value = frecuencia;
+    }
 
-        ganancia.gain.setValueAtTime(0.0001, ctx.currentTime);
+
+    function obtenerTimbre() {
+
+        return document
+            .getElementById("timbre")
+            .value;
+
+    }
+
+
+    function reproducirFrecuencia(
+        frecuencia,
+        duracion = 0.45
+    ) {
+
+        const ctx =
+            obtenerAudioContext();
+
+        const oscilador =
+            ctx.createOscillator();
+
+        const ganancia =
+            ctx.createGain();
+
+
+        oscilador.type =
+            obtenerTimbre();
+
+        oscilador.frequency.value =
+            frecuencia;
+
+
+        const volumen =
+            obtenerVolumen();
+
+
+        ganancia.gain.setValueAtTime(
+            0.0001,
+            ctx.currentTime
+        );
+
 
         ganancia.gain.exponentialRampToValueAtTime(
-            0.25,
+            Math.max(0.0001, volumen),
             ctx.currentTime + 0.02
         );
+
 
         ganancia.gain.exponentialRampToValueAtTime(
             0.0001,
             ctx.currentTime + duracion
         );
 
-        oscilador.connect(ganancia);
-        ganancia.connect(ctx.destination);
+
+        oscilador.connect(
+            ganancia
+        );
+
+        ganancia.connect(
+            ctx.destination
+        );
+
 
         oscilador.start();
 
-        oscilador.stop(ctx.currentTime + duracion);
+        oscilador.stop(
+            ctx.currentTime + duracion + 0.02
+        );
+
     }
 
 
-    function frecuenciaNota(semitonos) {
+    function frecuenciaNota(
+        semitonos
+    ) {
 
-        const tonica = document.getElementById("tonica").value;
+        const tonica =
+            document
+                .getElementById("tonica")
+                .value;
 
-        const frecuenciaTonica = frecuencias[tonica];
 
-        return frecuenciaTonica * Math.pow(
-            2,
-            semitonos / 12
-        );
+        const frecuenciaTonica =
+            frecuencias[tonica];
+
+
+        return frecuenciaTonica *
+            Math.pow(
+                2,
+                semitonos / 12
+            );
+
     }
 
 
     // ==========================================
-    // OBTENER ESCALA ACTUAL
+    // ESCALA ACTUAL
     // ==========================================
 
     function obtenerEscala() {
 
-        if (modoActual === "mayor") {
+        if (
+            modoActual === "mayor"
+        ) {
+
             return escalaMayor;
+
         }
 
         return escalaMenor;
+
     }
 
 
     // ==========================================
-    // TEXTO QUE SE MUESTRA EN LOS BOTONES
+    // TEXTO DE NOTAS
     // ==========================================
 
-    function textoNota(nota) {
+    function textoNota(
+        nota
+    ) {
 
-        if (formaMostrar === "solfeo") {
+        if (
+            formaMostrar === "solfeo"
+        ) {
+
             return nota.silaba;
+
         }
 
         return nota.grado;
+
     }
 
 
     // ==========================================
-    // CREAR BOTONES DE NOTAS
+    // BOTONES DE NOTAS
     // ==========================================
 
     function crearBotones() {
 
         const contenedor =
-            document.getElementById("botonesNotas");
-
-        contenedor.innerHTML = "";
-
-        const escala = obtenerEscala();
-
-        escala.forEach((nota, indice) => {
-
-            const boton = document.createElement("button");
-
-            boton.textContent = textoNota(nota);
-
-            boton.addEventListener("click", () => {
-
-                reproducirFrecuencia(
-                    frecuenciaNota(nota.semitonos)
+            document
+                .getElementById(
+                    "botonesNotas"
                 );
 
-                secuencia.push({
-                    ...nota,
-                    indice: indice
-                });
 
-                actualizarMelodia();
+        contenedor.innerHTML =
+            "";
 
-            });
 
-            contenedor.appendChild(boton);
+        const escala =
+            obtenerEscala();
 
-        });
+
+        escala.forEach(
+            (nota, indice) => {
+
+                const boton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                boton.textContent =
+                    textoNota(nota);
+
+
+                boton.addEventListener(
+                    "click",
+                    () => {
+
+                        reproducirFrecuencia(
+                            frecuenciaNota(
+                                nota.semitonos
+                            )
+                        );
+
+
+                        secuencia.push({
+
+                            ...nota,
+
+                            indice: indice
+
+                        });
+
+
+                        actualizarMelodia();
+
+                    }
+                );
+
+
+                contenedor.appendChild(
+                    boton
+                );
+
+            }
+        );
 
     }
 
 
     // ==========================================
-    // ACTUALIZAR LA MELODÍA
+    // ACTUALIZAR MELODÍA
     // ==========================================
 
     function actualizarMelodia() {
 
         const contenedor =
-            document.getElementById("melodia");
+            document
+                .getElementById(
+                    "melodia"
+                );
 
-        contenedor.innerHTML = "";
 
-        if (secuencia.length === 0) {
+        contenedor.innerHTML =
+            "";
+
+
+        if (
+            secuencia.length === 0
+        ) {
 
             const vacio =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            vacio.className = "melodia-vacia";
+
+            vacio.className =
+                "melodia-vacia";
+
 
             vacio.textContent =
                 "Hacé clic en las notas para construir la melodía";
 
-            contenedor.appendChild(vacio);
+
+            contenedor.appendChild(
+                vacio
+            );
+
 
             return;
+
         }
 
 
-        secuencia.forEach((nota, indice) => {
+        secuencia.forEach(
+            (nota) => {
 
-            const boton =
-                document.createElement("button");
+                const boton =
+                    document.createElement(
+                        "button"
+                    );
 
-            boton.className = "nota-melodia";
 
-            boton.textContent = textoNota(nota);
+                boton.className =
+                    "nota-melodia";
 
-            boton.addEventListener("click", () => {
 
-                reproducirFrecuencia(
-                    frecuenciaNota(nota.semitonos)
+                boton.textContent =
+                    textoNota(nota);
+
+
+                boton.addEventListener(
+                    "click",
+                    () => {
+
+                        reproducirFrecuencia(
+                            frecuenciaNota(
+                                nota.semitonos
+                            )
+                        );
+
+                    }
                 );
 
-            });
 
-            contenedor.appendChild(boton);
+                contenedor.appendChild(
+                    boton
+                );
 
-        });
+            }
+        );
 
     }
 
@@ -581,15 +838,20 @@
     // ==========================================
 
     document
-        .getElementById("escucharTonica")
-        .addEventListener("click", () => {
+        .getElementById(
+            "escucharTonica"
+        )
+        .addEventListener(
+            "click",
+            () => {
 
-            reproducirFrecuencia(
-                frecuenciaNota(0),
-                0.8
-            );
+                reproducirFrecuencia(
+                    frecuenciaNota(0),
+                    0.8
+                );
 
-        });
+            }
+        );
 
 
     // ==========================================
@@ -597,18 +859,27 @@
     // ==========================================
 
     document
-        .getElementById("modo")
-        .addEventListener("change", (event) => {
+        .getElementById(
+            "modo"
+        )
+        .addEventListener(
+            "change",
+            (event) => {
 
-            modoActual = event.target.value;
+                modoActual =
+                    event.target.value;
 
-            secuencia = [];
 
-            crearBotones();
+                secuencia =
+                    [];
 
-            actualizarMelodia();
 
-        });
+                crearBotones();
+
+                actualizarMelodia();
+
+            }
+        );
 
 
     // ==========================================
@@ -616,54 +887,127 @@
     // ==========================================
 
     document
-        .getElementById("tonica")
-        .addEventListener("change", () => {
+        .getElementById(
+            "tonica"
+        )
+        .addEventListener(
+            "change",
+            () => {
 
-            secuencia = [];
+                secuencia =
+                    [];
 
-            actualizarMelodia();
-
-        });
-
-
-    // ==========================================
-    // CAMBIO ENTRE SOLFEO Y GRADOS
-    // ==========================================
-
-    document
-        .querySelectorAll('input[name="formaMostrar"]')
-        .forEach((radio) => {
-
-            radio.addEventListener("change", (event) => {
-
-                formaMostrar = event.target.value;
-
-                crearBotones();
-
-                actualizarMelodia();
-
-            });
-
-        });
-
-
-    // ==========================================
-    // BOTÓN ÚLTIMA
-    // ==========================================
-
-    document
-        .getElementById("ultima")
-        .addEventListener("click", () => {
-
-            if (secuencia.length > 0) {
-
-                secuencia.pop();
 
                 actualizarMelodia();
 
             }
+        );
 
-        });
+
+    // ==========================================
+    // CAMBIO SOLFEO / GRADOS
+    // ==========================================
+
+    document
+        .querySelectorAll(
+            'input[name="formaMostrar"]'
+        )
+        .forEach(
+            (radio) => {
+
+                radio.addEventListener(
+                    "change",
+                    (event) => {
+
+                        formaMostrar =
+                            event.target.value;
+
+
+                        crearBotones();
+
+                        actualizarMelodia();
+
+                    }
+                );
+
+            }
+        );
+
+
+    // ==========================================
+    // VOLUMEN
+    // ==========================================
+
+    const controlVolumen =
+        document.getElementById(
+            "volumen"
+        );
+
+
+    const valorVolumen =
+        document.getElementById(
+            "valorVolumen"
+        );
+
+
+    controlVolumen
+        .addEventListener(
+            "input",
+            () => {
+
+                valorVolumen.textContent =
+                    controlVolumen.value +
+                    "%";
+
+            }
+        );
+
+
+    // ==========================================
+    // CAMBIO DE TIMBRE
+    // ==========================================
+
+    document
+        .getElementById(
+            "timbre"
+        )
+        .addEventListener(
+            "change",
+            () => {
+
+                reproducirFrecuencia(
+                    frecuenciaNota(0),
+                    0.6
+                );
+
+            }
+        );
+
+
+    // ==========================================
+    // ÚLTIMA NOTA
+    // ==========================================
+
+    document
+        .getElementById(
+            "ultima"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                if (
+                    secuencia.length > 0
+                ) {
+
+                    secuencia.pop();
+
+                    actualizarMelodia();
+
+                }
+
+            }
+        );
 
 
     // ==========================================
@@ -671,44 +1015,76 @@
     // ==========================================
 
     document
-        .getElementById("borrar")
-        .addEventListener("click", () => {
+        .getElementById(
+            "borrar"
+        )
+        .addEventListener(
+            "click",
+            () => {
 
-            secuencia = [];
+                secuencia =
+                    [];
 
-            actualizarMelodia();
 
-        });
+                actualizarMelodia();
+
+            }
+        );
 
 
     // ==========================================
-    // REPRODUCIR MELODÍA COMPLETA
+    // REPRODUCIR MELODÍA
     // ==========================================
 
     document
-        .getElementById("reproducir")
-        .addEventListener("click", () => {
+        .getElementById(
+            "reproducir"
+        )
+        .addEventListener(
+            "click",
+            () => {
 
-            if (secuencia.length === 0) {
-                return;
+                if (
+                    secuencia.length === 0
+                ) {
+
+                    return;
+
+                }
+
+
+                const duracion =
+                    0.5;
+
+
+                secuencia.forEach(
+                    (nota, indice) => {
+
+                        setTimeout(
+                            () => {
+
+                                reproducirFrecuencia(
+
+                                    frecuenciaNota(
+                                        nota.semitonos
+                                    ),
+
+                                    0.45
+
+                                );
+
+                            },
+
+                            indice *
+                            duracion *
+                            1000
+                        );
+
+                    }
+                );
+
             }
-
-            const duracion = 0.5;
-
-            secuencia.forEach((nota, indice) => {
-
-                setTimeout(() => {
-
-                    reproducirFrecuencia(
-                        frecuenciaNota(nota.semitonos),
-                        0.45
-                    );
-
-                }, indice * duracion * 1000);
-
-            });
-
-        });
+        );
 
 
     // ==========================================
