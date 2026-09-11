@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoviDo</title>
+    <title>🎵 MoviDo</title>
 
     <style>
         * {
@@ -11,21 +11,26 @@
         }
 
         body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
             margin: 0;
             padding: 20px;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f8;
             color: #222;
         }
 
         .contenedor {
-            max-width: 1100px;
+            max-width: 800px;
             margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
         }
 
         h1 {
             text-align: center;
-            margin: 10px 0 5px;
+            margin-top: 0;
+            margin-bottom: 5px;
         }
 
         .subtitulo {
@@ -34,139 +39,147 @@
             margin-bottom: 25px;
         }
 
-        .panel {
-            background: white;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 8px rgba(0,0,0,.08);
-        }
-
-        .configuracion {
+        .fila-controles {
             display: flex;
-            gap: 20px;
-            justify-content: center;
+            gap: 15px;
             flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
         }
 
-        .campo {
+        .control {
             display: flex;
             flex-direction: column;
-            gap: 7px;
+            gap: 5px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
         }
 
         select {
-            padding: 10px 14px;
-            font-size: 17px;
-            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 16px;
             border-radius: 8px;
+            border: 1px solid #bbb;
             background: white;
         }
 
-        .titulo-escala,
-        .titulo-melodia {
-            text-align: center;
-            margin-top: 0;
+        .seccion {
+            margin-top: 20px;
+        }
+
+        .titulo-seccion {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
 
         .botones {
             display: flex;
             flex-wrap: wrap;
-            gap: 9px;
+            gap: 8px;
             justify-content: center;
         }
 
-        .nota {
-            width: 62px;
-            height: 58px;
+        button {
             border: none;
-            border-radius: 10px;
-            background: #2d6cdf;
-            color: white;
-            font-size: 19px;
-            font-weight: bold;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 17px;
             cursor: pointer;
-            transition: transform .1s, background .1s;
+            background: #e5e5e5;
+            transition: 0.15s;
         }
 
-        .nota:hover {
-            background: #1b56c0;
-            transform: translateY(-2px);
+        button:hover {
+            background: #d2d2d2;
         }
 
-        .nota:active {
-            transform: scale(.95);
+        button:active {
+            transform: scale(0.96);
+        }
+
+        .boton-tonica {
+            display: block;
+            margin: 0 auto;
+            background: #dcecff;
+        }
+
+        .boton-tonica:hover {
+            background: #c9e1ff;
+        }
+
+        .opciones-mostrar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .opciones-mostrar label {
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .opciones-mostrar input {
+            margin-right: 5px;
+            cursor: pointer;
         }
 
         .melodia {
+            min-height: 70px;
+            border: 2px dashed #bbb;
+            border-radius: 10px;
+            padding: 12px;
             display: flex;
             flex-wrap: wrap;
-            gap: 9px;
-            min-height: 70px;
+            gap: 8px;
             align-items: center;
-            padding: 10px;
         }
 
-        .ficha {
-            background: #4caf50;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 9px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .vacio {
+        .melodia-vacia {
+            color: #999;
             width: 100%;
             text-align: center;
-            color: #999;
-            font-style: italic;
         }
 
-        .controles {
+        .nota-melodia {
+            background: #dff2df;
+            border: 1px solid #a8d3a8;
+            padding: 9px 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .nota-melodia:hover {
+            background: #cce8cc;
+        }
+
+        .controles-melodia {
             display: flex;
             justify-content: center;
+            gap: 10px;
             flex-wrap: wrap;
-            gap: 12px;
-            margin: 18px 0;
-        }
-
-        .control {
-            border: none;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 9px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .tonica {
-            background: #555;
+            margin-top: 15px;
         }
 
         .reproducir {
-            background: #2e7d32;
+            background: #dff2df;
+        }
+
+        .reproducir:hover {
+            background: #cce8cc;
         }
 
         .borrar {
-            background: #777;
+            background: #f5dada;
         }
 
-        .control:hover {
-            opacity: .85;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 12px;
-            }
-
-            .nota {
-                width: 54px;
-                height: 54px;
-                font-size: 17px;
-            }
+        .borrar:hover {
+            background: #ecc7c7;
         }
     </style>
 </head>
@@ -176,95 +189,110 @@
 <div class="contenedor">
 
     <h1>🎵 MoviDo</h1>
+    <div class="subtitulo">Verificador melódico mediante solfeo movible</div>
 
-    <p class="subtitulo">
-        Verificador melódico mediante solfeo movible
-    </p>
+    <div class="fila-controles">
 
-    <div class="panel">
+        <div class="control">
+            <label for="modo">Modo</label>
+            <select id="modo">
+                <option value="mayor">Mayor</option>
+                <option value="menor">Menor</option>
+            </select>
+        </div>
 
-        <div class="configuracion">
+        <div class="control">
+            <label for="tonica">Tónica</label>
+            <select id="tonica">
+                <option value="C">Do</option>
+                <option value="Db">Re♭</option>
+                <option value="D">Re</option>
+                <option value="Eb">Mi♭</option>
+                <option value="E">Mi</option>
+                <option value="F">Fa</option>
+                <option value="F#">Fa♯</option>
+                <option value="G">Sol</option>
+                <option value="Ab">La♭</option>
+                <option value="A">La</option>
+                <option value="Bb">Si♭</option>
+                <option value="B">Si</option>
+            </select>
+        </div>
 
-            <div class="campo">
-                <label for="modo"><strong>Modo</strong></label>
+    </div>
 
-                <select id="modo">
-                    <option value="mayor">Mayor</option>
-                    <option value="menor">Menor</option>
-                </select>
-            </div>
+    <button class="boton-tonica" id="escucharTonica">
+        🎵 Escuchar la tónica
+    </button>
 
-            <div class="campo">
-                <label for="tonica"><strong>Tónica</strong></label>
+    <div class="seccion">
 
-                <select id="tonica">
-                    <option value="C">Do</option>
-                    <option value="Db">Re♭</option>
-                    <option value="D">Re</option>
-                    <option value="Eb">Mi♭</option>
-                    <option value="E">Mi</option>
-                    <option value="F">Fa</option>
-                    <option value="F#">Fa♯</option>
-                    <option value="G">Sol</option>
-                    <option value="Ab">La♭</option>
-                    <option value="A">La</option>
-                    <option value="Bb">Si♭</option>
-                    <option value="B">Si</option>
-                </select>
+        <div class="titulo-seccion">
+            Mostrar como:
+        </div>
 
-            </div>
+        <div class="opciones-mostrar">
+
+            <label>
+                <input
+                    type="radio"
+                    name="formaMostrar"
+                    value="solfeo"
+                    checked
+                >
+                Solfeo
+            </label>
+
+            <label>
+                <input
+                    type="radio"
+                    name="formaMostrar"
+                    value="grados"
+                >
+                Grados
+            </label>
 
         </div>
 
     </div>
 
-    <div class="controles">
+    <div class="seccion">
 
-        <button id="tocarTonica" class="control tonica">
-            🎵 Escuchar la tónica
-        </button>
+        <div class="titulo-seccion">
+            Notas
+        </div>
 
-    </div>
-
-    <div class="panel">
-
-        <h2 class="titulo-escala">
-            Escala
-        </h2>
-
-        <div id="botones" class="botones"></div>
+        <div class="botones" id="botonesNotas"></div>
 
     </div>
 
-    <div class="panel">
+    <div class="seccion">
 
-        <h2 class="titulo-melodia">
+        <div class="titulo-seccion">
             Melodía
-        </h2>
-
-        <div id="melodia" class="melodia">
-
-            <span class="vacio">
-                Todavía no escribiste ninguna nota.
-            </span>
-
         </div>
 
-    </div>
+        <div class="melodia" id="melodia">
+            <div class="melodia-vacia">
+                Hacé clic en las notas para construir la melodía
+            </div>
+        </div>
 
-    <div class="controles">
+        <div class="controles-melodia">
 
-        <button id="reproducir" class="control reproducir">
-            ▶ Reproducir
-        </button>
+            <button class="reproducir" id="reproducir">
+                ▶ Reproducir
+            </button>
 
-        <button id="borrarUltima" class="control borrar">
-            ⌫ Última
-        </button>
+            <button id="ultima">
+                ⌫ Última
+            </button>
 
-        <button id="borrarTodo" class="control borrar">
-            🗑 Borrar todo
-        </button>
+            <button class="borrar" id="borrar">
+                🗑 Borrar todo
+            </button>
+
+        </div>
 
     </div>
 
@@ -273,503 +301,423 @@
 
 <script>
 
-/* ==========================================
-   MOViDO
-   ========================================== */
+    // ==========================================
+    // FRECUENCIAS DE LAS TÓNICAS
+    // ==========================================
 
-const modo = document.getElementById("modo");
-const tonica = document.getElementById("tonica");
-const botones = document.getElementById("botones");
-const melodia = document.getElementById("melodia");
-const tocarTonica = document.getElementById("tocarTonica");
-const reproducir = document.getElementById("reproducir");
-const borrarUltima = document.getElementById("borrarUltima");
-const borrarTodo = document.getElementById("borrarTodo");
-
-
-/* ==========================================
-   ESCALA MAYOR
-
-   La tónica es DO.
-   ========================================== */
-
-const escalaMayor = [
-
-    { silaba: "so.", semitonos: -5 },
-    { silaba: "la.", semitonos: -3 },
-    { silaba: "ti.", semitonos: -1 },
-
-    { silaba: "do=1", semitonos: 0 },
-    { silaba: "re", semitonos: 2 },
-    { silaba: "mi", semitonos: 4 },
-    { silaba: "fa", semitonos: 5 },
-    { silaba: "so", semitonos: 7 },
-    { silaba: "la", semitonos: 9 },
-    { silaba: "ti", semitonos: 11 },
-
-    { silaba: "do'=1", semitonos: 12 },
-    { silaba: "re'", semitonos: 14 },
-    { silaba: "mi'", semitonos: 16 },
-    { silaba: "fa'", semitonos: 17 },
-    { silaba: "so'", semitonos: 19 }
-
-];
+    const frecuencias = {
+        "C": 261.63,
+        "Db": 277.18,
+        "D": 293.66,
+        "Eb": 311.13,
+        "E": 329.63,
+        "F": 349.23,
+        "F#": 369.99,
+        "G": 392.00,
+        "Ab": 415.30,
+        "A": 440.00,
+        "Bb": 466.16,
+        "B": 493.88
+    };
 
 
-/* ==========================================
-   ESCALA MENOR
+    // ==========================================
+    // ESCALA MAYOR
+    // do = tónica
+    // ==========================================
 
-   La tónica es LA.
-
-   Secuencia:
-
-   si, la, ti, do, re, mi, fa, fi,
-   so, si, la, ti, do', re', mi', fa'
-   ========================================== */
-
-const escalaMenor = [
-
-    { silaba: "si", semitonos: -1 },
-    { silaba: "la=1", semitonos: 0 },
-    { silaba: "ti", semitonos: 2 },
-
-    { silaba: "do", semitonos: 3 },
-    { silaba: "re", semitonos: 5 },
-    { silaba: "mi", semitonos: 7 },
-    { silaba: "fa", semitonos: 8 },
-    { silaba: "fi", semitonos: 9 },
-
-    { silaba: "so", semitonos: 10 },
-    { silaba: "si", semitonos: 11 },
-
-    { silaba: "la=1", semitonos: 12 },
-    { silaba: "ti", semitonos: 14 },
-
-    { silaba: "do'", semitonos: 15 },
-    { silaba: "re'", semitonos: 17 },
-    { silaba: "mi'", semitonos: 19 },
-    { silaba: "fa'", semitonos: 20 }
-
-];
+    const escalaMayor = [
+        { silaba: "so", semitonos: -5, grado: "5" },
+        { silaba: "la", semitonos: -3, grado: "6" },
+        { silaba: "ti", semitonos: -1, grado: "7" },
+        { silaba: "do", semitonos: 0, grado: "1" },
+        { silaba: "re", semitonos: 2, grado: "2" },
+        { silaba: "mi", semitonos: 4, grado: "3" },
+        { silaba: "fa", semitonos: 5, grado: "4" },
+        { silaba: "so", semitonos: 7, grado: "5" },
+        { silaba: "la", semitonos: 9, grado: "6" },
+        { silaba: "ti", semitonos: 11, grado: "7" },
+        { silaba: "do'", semitonos: 12, grado: "1" },
+        { silaba: "re'", semitonos: 14, grado: "2" },
+        { silaba: "mi'", semitonos: 16, grado: "3" },
+        { silaba: "fa'", semitonos: 17, grado: "4" },
+        { silaba: "so'", semitonos: 19, grado: "5" }
+    ];
 
 
-let secuencia = [];
+    // ==========================================
+    // ESCALA MENOR
+    // la = tónica
+    //
+    // si = ♭7 inferior
+    // la = 1
+    // ti = 2
+    // do = ♭3
+    // re = 4
+    // mi = 5
+    // fa = ♭6
+    // fi = 6
+    // so = ♭7
+    // si = 7
+    // ==========================================
+
+    const escalaMenor = [
+        { silaba: "so", semitonos: -1, grado: "♭7" },
+        { silaba: "la", semitonos: 0, grado: "1" },
+        { silaba: "ti", semitonos: 2, grado: "2" },
+        { silaba: "do", semitonos: 3, grado: "♭3" },
+        { silaba: "re", semitonos: 5, grado: "4" },
+        { silaba: "mi", semitonos: 7, grado: "5" },
+        { silaba: "fa", semitonos: 8, grado: "♭6" },
+        { silaba: "fi", semitonos: 9, grado: "6" },
+        { silaba: "so", semitonos: 10, grado: "♭7" },
+        { silaba: "si", semitonos: 11, grado: "7" },
+        { silaba: "la", semitonos: 12, grado: "1" },
+        { silaba: "ti", semitonos: 14, grado: "2" },
+        { silaba: "do'", semitonos: 15, grado: "♭3" },
+        { silaba: "re'", semitonos: 17, grado: "4" },
+        { silaba: "mi'", semitonos: 19, grado: "5" },
+        { silaba: "fa'", semitonos: 20, grado: "♭6" }
+    ];
 
 
-/* ==========================================
-   FRECUENCIAS DE LAS TÓNICAS
-   ========================================== */
+    // ==========================================
+    // VARIABLES
+    // ==========================================
 
-const frecuencias = {
+    let secuencia = [];
 
-    "C": 261.63,
-    "Db": 277.18,
-    "D": 293.66,
-    "Eb": 311.13,
-    "E": 329.63,
-    "F": 349.23,
-    "F#": 369.99,
-    "G": 392.00,
-    "Ab": 415.30,
-    "A": 440.00,
-    "Bb": 466.16,
-    "B": 493.88
+    let modoActual = "mayor";
 
-};
+    let formaMostrar = "solfeo";
 
 
-let audioContext = null;
+    // ==========================================
+    // AUDIO
+    // ==========================================
+
+    let audioContext = null;
 
 
-/* ==========================================
-   INICIAR AUDIO
-   ========================================== */
+    function obtenerAudioContext() {
 
-function iniciarAudio() {
+        if (!audioContext) {
+            audioContext = new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+        }
 
-    if (!audioContext) {
-
-        audioContext =
-            new (window.AudioContext ||
-                 window.webkitAudioContext)();
-
+        return audioContext;
     }
 
-    if (audioContext.state === "suspended") {
 
-        audioContext.resume();
+    function reproducirFrecuencia(frecuencia, duracion = 0.45) {
 
+        const ctx = obtenerAudioContext();
+
+        const oscilador = ctx.createOscillator();
+        const ganancia = ctx.createGain();
+
+        oscilador.type = "sine";
+        oscilador.frequency.value = frecuencia;
+
+        ganancia.gain.setValueAtTime(0.0001, ctx.currentTime);
+
+        ganancia.gain.exponentialRampToValueAtTime(
+            0.25,
+            ctx.currentTime + 0.02
+        );
+
+        ganancia.gain.exponentialRampToValueAtTime(
+            0.0001,
+            ctx.currentTime + duracion
+        );
+
+        oscilador.connect(ganancia);
+        ganancia.connect(ctx.destination);
+
+        oscilador.start();
+
+        oscilador.stop(ctx.currentTime + duracion);
     }
 
-}
+
+    function frecuenciaNota(semitonos) {
+
+        const tonica = document.getElementById("tonica").value;
+
+        const frecuenciaTonica = frecuencias[tonica];
+
+        return frecuenciaTonica * Math.pow(
+            2,
+            semitonos / 12
+        );
+    }
 
 
-/* ==========================================
-   TOCAR UNA NOTA
-   ========================================== */
+    // ==========================================
+    // OBTENER ESCALA ACTUAL
+    // ==========================================
 
-function tocarNota(semitonos, duracion = 0.5) {
+    function obtenerEscala() {
 
-    iniciarAudio();
+        if (modoActual === "mayor") {
+            return escalaMayor;
+        }
 
-    const frecuenciaTonica =
-        frecuencias[tonica.value];
-
-    const frecuencia =
-        frecuenciaTonica *
-        Math.pow(2, semitonos / 12);
+        return escalaMenor;
+    }
 
 
-    const oscilador =
-        audioContext.createOscillator();
+    // ==========================================
+    // TEXTO QUE SE MUESTRA EN LOS BOTONES
+    // ==========================================
 
-    const ganancia =
-        audioContext.createGain();
+    function textoNota(nota) {
 
+        if (formaMostrar === "solfeo") {
+            return nota.silaba;
+        }
 
-    oscilador.type = "sine";
-
-    oscilador.frequency.value =
-        frecuencia;
-
-
-    oscilador.connect(ganancia);
-
-    ganancia.connect(
-        audioContext.destination
-    );
+        return nota.grado;
+    }
 
 
-    const ahora =
-        audioContext.currentTime;
+    // ==========================================
+    // CREAR BOTONES DE NOTAS
+    // ==========================================
 
+    function crearBotones() {
 
-    ganancia.gain.setValueAtTime(
-        0.0001,
-        ahora
-    );
+        const contenedor =
+            document.getElementById("botonesNotas");
 
+        contenedor.innerHTML = "";
 
-    ganancia.gain.exponentialRampToValueAtTime(
-        0.35,
-        ahora + 0.02
-    );
+        const escala = obtenerEscala();
 
+        escala.forEach((nota, indice) => {
 
-    ganancia.gain.exponentialRampToValueAtTime(
-        0.0001,
-        ahora + duracion
-    );
+            const boton = document.createElement("button");
 
+            boton.textContent = textoNota(nota);
 
-    oscilador.start(ahora);
+            boton.addEventListener("click", () => {
 
-    oscilador.stop(
-        ahora + duracion + 0.05
-    );
-
-}
-
-
-/* ==========================================
-   CREAR BOTONES DE LA ESCALA
-   ========================================== */
-
-function crearBotones() {
-
-    botones.innerHTML = "";
-
-    const escala =
-        modo.value === "mayor"
-            ? escalaMayor
-            : escalaMenor;
-
-
-    escala.forEach(nota => {
-
-        const boton =
-            document.createElement("button");
-
-
-        boton.className = "nota";
-
-        boton.textContent =
-            nota.silaba;
-
-
-        boton.addEventListener(
-            "click",
-            () => {
-
-                tocarNota(
-                    nota.semitonos
+                reproducirFrecuencia(
+                    frecuenciaNota(nota.semitonos)
                 );
 
-
-                secuencia.push(nota);
+                secuencia.push({
+                    ...nota,
+                    indice: indice
+                });
 
                 actualizarMelodia();
 
-            }
-        );
+            });
 
+            contenedor.appendChild(boton);
 
-        botones.appendChild(boton);
-
-    });
-
-}
-
-
-/* ==========================================
-   ACTUALIZAR MELODÍA
-   ========================================== */
-
-function actualizarMelodia() {
-
-    melodia.innerHTML = "";
-
-
-    if (secuencia.length === 0) {
-
-        melodia.innerHTML =
-            `<span class="vacio">
-                Todavía no escribiste ninguna nota.
-             </span>`;
-
-        return;
+        });
 
     }
 
 
-    secuencia.forEach(nota => {
+    // ==========================================
+    // ACTUALIZAR LA MELODÍA
+    // ==========================================
 
-        const ficha =
-            document.createElement("div");
+    function actualizarMelodia() {
 
+        const contenedor =
+            document.getElementById("melodia");
 
-        ficha.className = "ficha";
-
-        ficha.textContent =
-            nota.silaba;
-
-
-        ficha.addEventListener(
-            "click",
-            () => {
-
-                tocarNota(
-                    nota.semitonos
-                );
-
-            }
-        );
-
-
-        ficha.title =
-            "Clic para escuchar";
-
-
-        melodia.appendChild(ficha);
-
-    });
-
-}
-
-
-/* ==========================================
-   CAMBIO DE MODO
-   ========================================== */
-
-modo.addEventListener(
-    "change",
-    () => {
-
-        secuencia = [];
-
-        actualizarMelodia();
-
-        crearBotones();
-
-    }
-);
-
-
-/* ==========================================
-   CAMBIO DE TÓNICA
-   ========================================== */
-
-tonica.addEventListener(
-    "change",
-    () => {
-
-        secuencia = [];
-
-        actualizarMelodia();
-
-    }
-);
-
-
-/* ==========================================
-   ESCUCHAR TÓNICA
-   ========================================== */
-
-tocarTonica.addEventListener(
-    "click",
-    () => {
-
-        tocarNota(
-            0,
-            0.8
-        );
-
-    }
-);
-
-
-/* ==========================================
-   BORRAR ÚLTIMA
-   ========================================== */
-
-borrarUltima.addEventListener(
-    "click",
-    () => {
-
-        if (secuencia.length > 0) {
-
-            secuencia.pop();
-
-            actualizarMelodia();
-
-        }
-
-    }
-);
-
-
-/* ==========================================
-   BORRAR TODO
-   ========================================== */
-
-borrarTodo.addEventListener(
-    "click",
-    () => {
-
-        secuencia = [];
-
-        actualizarMelodia();
-
-    }
-);
-
-
-/* ==========================================
-   REPRODUCIR MELODÍA
-   ========================================== */
-
-reproducir.addEventListener(
-    "click",
-    () => {
+        contenedor.innerHTML = "";
 
         if (secuencia.length === 0) {
+
+            const vacio =
+                document.createElement("div");
+
+            vacio.className = "melodia-vacia";
+
+            vacio.textContent =
+                "Hacé clic en las notas para construir la melodía";
+
+            contenedor.appendChild(vacio);
+
             return;
         }
 
 
-        iniciarAudio();
+        secuencia.forEach((nota, indice) => {
 
+            const boton =
+                document.createElement("button");
 
-        const frecuenciaTonica =
-            frecuencias[tonica.value];
+            boton.className = "nota-melodia";
 
+            boton.textContent = textoNota(nota);
 
-        const ahora =
-            audioContext.currentTime;
+            boton.addEventListener("click", () => {
 
-
-        const duracion = 0.5;
-
-
-        secuencia.forEach(
-            (nota, indice) => {
-
-                const frecuencia =
-                    frecuenciaTonica *
-                    Math.pow(
-                        2,
-                        nota.semitonos / 12
-                    );
-
-
-                const oscilador =
-                    audioContext.createOscillator();
-
-
-                const ganancia =
-                    audioContext.createGain();
-
-
-                oscilador.type =
-                    "sine";
-
-
-                oscilador.frequency.value =
-                    frecuencia;
-
-
-                oscilador.connect(
-                    ganancia
+                reproducirFrecuencia(
+                    frecuenciaNota(nota.semitonos)
                 );
 
+            });
 
-                ganancia.connect(
-                    audioContext.destination
-                );
+            contenedor.appendChild(boton);
 
-
-                const inicio =
-                    ahora +
-                    indice * duracion;
-
-
-                ganancia.gain.setValueAtTime(
-                    0.0001,
-                    inicio
-                );
-
-
-                ganancia.gain.exponentialRampToValueAtTime(
-                    0.35,
-                    inicio + 0.02
-                );
-
-
-                ganancia.gain.exponentialRampToValueAtTime(
-                    0.0001,
-                    inicio + duracion
-                );
-
-
-                oscilador.start(inicio);
-
-
-                oscilador.stop(
-                    inicio + duracion + 0.05
-                );
-
-            }
-        );
+        });
 
     }
-);
 
 
-/* ==========================================
-   INICIO
-   ========================================== */
+    // ==========================================
+    // ESCUCHAR TÓNICA
+    // ==========================================
 
-crearBotones();
+    document
+        .getElementById("escucharTonica")
+        .addEventListener("click", () => {
+
+            reproducirFrecuencia(
+                frecuenciaNota(0),
+                0.8
+            );
+
+        });
+
+
+    // ==========================================
+    // CAMBIO DE MODO
+    // ==========================================
+
+    document
+        .getElementById("modo")
+        .addEventListener("change", (event) => {
+
+            modoActual = event.target.value;
+
+            secuencia = [];
+
+            crearBotones();
+
+            actualizarMelodia();
+
+        });
+
+
+    // ==========================================
+    // CAMBIO DE TÓNICA
+    // ==========================================
+
+    document
+        .getElementById("tonica")
+        .addEventListener("change", () => {
+
+            secuencia = [];
+
+            actualizarMelodia();
+
+        });
+
+
+    // ==========================================
+    // CAMBIO ENTRE SOLFEO Y GRADOS
+    // ==========================================
+
+    document
+        .querySelectorAll('input[name="formaMostrar"]')
+        .forEach((radio) => {
+
+            radio.addEventListener("change", (event) => {
+
+                formaMostrar = event.target.value;
+
+                crearBotones();
+
+                actualizarMelodia();
+
+            });
+
+        });
+
+
+    // ==========================================
+    // BOTÓN ÚLTIMA
+    // ==========================================
+
+    document
+        .getElementById("ultima")
+        .addEventListener("click", () => {
+
+            if (secuencia.length > 0) {
+
+                secuencia.pop();
+
+                actualizarMelodia();
+
+            }
+
+        });
+
+
+    // ==========================================
+    // BORRAR TODO
+    // ==========================================
+
+    document
+        .getElementById("borrar")
+        .addEventListener("click", () => {
+
+            secuencia = [];
+
+            actualizarMelodia();
+
+        });
+
+
+    // ==========================================
+    // REPRODUCIR MELODÍA COMPLETA
+    // ==========================================
+
+    document
+        .getElementById("reproducir")
+        .addEventListener("click", () => {
+
+            if (secuencia.length === 0) {
+                return;
+            }
+
+            const duracion = 0.5;
+
+            secuencia.forEach((nota, indice) => {
+
+                setTimeout(() => {
+
+                    reproducirFrecuencia(
+                        frecuenciaNota(nota.semitonos),
+                        0.45
+                    );
+
+                }, indice * duracion * 1000);
+
+            });
+
+        });
+
+
+    // ==========================================
+    // INICIO
+    // ==========================================
+
+    crearBotones();
+
+    actualizarMelodia();
 
 </script>
 
